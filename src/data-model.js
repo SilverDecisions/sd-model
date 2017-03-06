@@ -1,7 +1,6 @@
 import {Utils} from 'sd-utils'
 import {log} from "sd-utils";
 import * as domain from './domain'
-import *  as _ from 'lodash'
 import {ValidationResult} from './validation-result'
 
 /*
@@ -44,7 +43,7 @@ export class DataModel {
     getJsonReplacer(filterLocation=false, filterComputed=false, replacer, filterPrivate =true){
         return function (k, v) {
 
-            if ((filterPrivate && _.startsWith(k, '$')) || k == 'parentNode') {
+            if ((filterPrivate && Utils.startsWith(k, '$')) || k == 'parentNode') {
                 return undefined;
             }
             if (filterLocation && k == 'location') {
@@ -258,7 +257,7 @@ export class DataModel {
         self._removeNode(node);
         var parent = node.$parent;
         if (parent) {
-            var parentEdge = _.find(parent.childEdges, (e, i)=> e.childNode === node);
+            var parentEdge = Utils.find(parent.childEdges, (e, i)=> e.childNode === node);
             if ($l == 0) {
                 self.removeEdge(parentEdge);
             } else {
@@ -311,7 +310,7 @@ export class DataModel {
         newNode.$parent = parent;
 
         if(parent){
-            var parentEdge = _.find(newNode.$parent.childEdges, e=>e.childNode===oldNode);
+            var parentEdge = Utils.find(newNode.$parent.childEdges, e=>e.childNode===oldNode);
             parentEdge.childNode = newNode;
         }
 
@@ -342,13 +341,13 @@ export class DataModel {
             childClone.$parent = clone;
             var edge = new domain.Edge(clone, childClone, e.name, e.payoff, e.probability);
             if (cloneComputedValues) {
-                edge.computed = _.cloneDeep(e.computed)
-                childClone.computed = _.cloneDeep(e.childNode.computed)
+                edge.computed = Utils.cloneDeep(e.computed)
+                childClone.computed = Utils.cloneDeep(e.childNode.computed)
             }
             clone.childEdges.push(edge);
         });
         if (cloneComputedValues) {
-            clone.computed = _.cloneDeep(nodeToCopy.computed)
+            clone.computed = Utils.cloneDeep(nodeToCopy.computed)
         }
         return clone;
     }
@@ -374,21 +373,21 @@ export class DataModel {
 
     /*shallow clone without parent and children*/
     cloneNode(node) {
-        var clone = _.clone(node)
+        var clone = Utils.clone(node)
         clone.$id = Utils.guid();
-        clone.location = _.clone(node.location);
-        clone.computed = _.clone(node.computed);
+        clone.location = Utils.clone(node.location);
+        clone.computed = Utils.clone(node.computed);
         clone.$parent = null;
         clone.childEdges = [];
         return clone;
     }
 
     findNodeById(id) {
-        return _.find(this.nodes, n=>n.$id == id);
+        return Utils.find(this.nodes, n=>n.$id == id);
     }
 
     findEdgeById(id) {
-        return _.find(this.edges, e=>e.$id == id);
+        return Utils.find(this.edges, e=>e.$id == id);
     }
 
     findById(id) {
@@ -474,10 +473,10 @@ export class DataModel {
     createStateSnapshot(revertConf){
         return {
             revertConf: revertConf,
-            nodes: _.cloneDeep(this.nodes),
-            edges: _.cloneDeep(this.edges),
-            texts: _.cloneDeep(this.texts),
-            expressionScope: _.cloneDeep(this.expressionScope),
+            nodes: Utils.cloneDeep(this.nodes),
+            edges: Utils.cloneDeep(this.edges),
+            texts: Utils.cloneDeep(this.texts),
+            expressionScope: Utils.cloneDeep(this.expressionScope),
             code: this.code,
             $codeError: this.$codeError
         }
@@ -579,7 +578,7 @@ export class DataModel {
     }
 
     clearExpressionScope() {
-        _.forOwn(this.expressionScope, (value, key)=> {
+        Utils.forOwn(this.expressionScope, (value, key)=> {
             delete this.expressionScope[key];
         });
     }

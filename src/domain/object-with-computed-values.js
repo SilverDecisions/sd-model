@@ -1,5 +1,4 @@
 import {Utils} from 'sd-utils'
-import *  as _ from 'lodash'
 
 import {ObjectWithIdAndEditableFields} from "./object-with-id-and-editable-fields";
 
@@ -15,9 +14,9 @@ export class ObjectWithComputedValues extends ObjectWithIdAndEditableFields{
         }
         path+=fieldName;
         if(value===undefined){
-            return  _.get(this, path, null);
+            return  Utils.get(this, path, null);
         }
-        _.set(this, path, value);
+        Utils.set(this, path, value);
         return value;
     }
 
