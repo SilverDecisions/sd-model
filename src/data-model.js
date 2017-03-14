@@ -83,6 +83,9 @@ export class DataModel {
         var callbacksDisabled = this.callbacksDisabled;
         this.callbacksDisabled = true;
 
+        this.clear();
+
+
         data.trees.forEach(nodeData=> {
             var node = this.createNodeFromData(nodeData);
         });
@@ -109,7 +112,7 @@ export class DataModel {
             serializedData: this.serialize(true, false, false, null, false),
             $codeError: this.$codeError,
             $codeDirty: this.$codeDirty,
-            validationResults: this.validationResults
+            validationResults: this.validationResults.slice()
 
         };
         return dto
