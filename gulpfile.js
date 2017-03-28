@@ -18,23 +18,88 @@ var Server = require('karma').Server;
 var gutil = require('gulp-util')
 var chalk = require('chalk')
 
+
 var projectName= "sd-model";
 var standaloneName= "SilverDecisions.Model";
+
+var dependencies = [];
+var vendorDependencies = [];
+var sdDependencies = [];
+for(var k in p.dependencies){
+    if(p.dependencies.hasOwnProperty(k)){
+        dependencies.push(k);
+        if(k.trim().startsWith("sd-")){
+            sdDependencies.push(k)
+        }else{
+            vendorDependencies.push(k)
+        }
+    }
+}
 
 gulp.task('clean', function (cb) {
     return del(['tmp', 'dist'], cb);
 });
 
-function buildJs(src, standaloneName,  jsFileName, dest) {
+gulp.task('build-clean', ['clean'], function () {
+    return gulp.start('build');
+});
 
-    var pipe = browserify({
+gulp.task('build', ['build-standalone', 'build-module'], function () {
+});
+
+gulp.task('build-standalone', function () {
+    var jsFileName =  projectName;
+    return buildJs('./index.js', standaloneName, jsFileName, "dist/standalone")
+});
+
+
+gulp.task('build-module', function () {
+    var jsFileName =  projectName;
+    // return buildJs('./index.js', 'sd-utils', jsFileName, "dist", sdDependencies)
+    var b = browserify({
+        debug: true,
+    })
+        .require('./index.js', {expose: projectName} )
+        .external(sdDependencies)
+    return finishBrowserifyBuild(b, jsFileName, "dist")
+});
+
+gulp.task('default', ['build-clean'],  function() {
+});
+
+function buildJs(src, standaloneName,  jsFileName, dest, external) {
+    if(!external){
+        external = []
+    }
+
+    var b = browserify({
         basedir: '.',
         debug: true,
         entries: [src],
         cache: {},
         packageCache: {},
         standalone: standaloneName
-    }).transform("babelify", {presets: ["es2015"],  plugins: ["transform-class-properties", "transform-object-assign", ["babel-plugin-transform-builtin-extend", {globals: ["Error"]}]]})
+    }).transform(stringify, {
+        appliesTo: { includeExtensions: ['.html'] }
+    })
+    // .plugin(resolutions, '*')
+        .external(external)
+
+    return finishBrowserifyBuild(b,jsFileName, dest)
+}
+
+function buildJsDependencies(jsFileName, moduleNames, dest){
+    var b = browserify({
+        debug: true,
+        require: [moduleNames]
+    })
+
+    return finishBrowserifyBuild(b, jsFileName, dest)
+}
+
+function finishBrowserifyBuild(b, jsFileName, dest){
+    var pipe = b
+        .transform("babelify", {presets: ["es2015"],  plugins: ["transform-class-properties", "transform-object-assign", ["babel-plugin-transform-builtin-extend", {globals: ["Error"]}]]})
         .bundle()
         .on('error', map_error)
         .pipe(plugins.plumber({ errorHandler: onError }))
@@ -55,17 +120,10 @@ function buildJs(src, standaloneName,  jsFileName, dest) {
             .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest(dest));
     }
-
-
     return pipe;
 }
 
-gulp.task('build', ['clean'], function () {
-    var jsFileName =  projectName;
-    return buildJs('./browser.index.js', standaloneName, jsFileName, "dist")
-});
-
-gulp.task('default', ['build'],  function() {
+gulp.task('default', ['build-clean'],  function() {
 });
 
 // error function for plumber
@@ -98,3 +156,4 @@ function map_error(err) {
 
     this.emit('end');
 }
+

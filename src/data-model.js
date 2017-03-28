@@ -107,9 +107,9 @@ export class DataModel {
         this.callbacksDisabled = callbacksDisabled;
     }
 
-    getDTO(){
+    getDTO(filterLocation=false, filterComputed=false, filterPrivate =true){
         var dto = {
-            serializedData: this.serialize(true, false, false, null, false),
+            serializedData: this.serialize(true, filterLocation, filterComputed, null, filterPrivate),
             $codeError: this.$codeError,
             $codeDirty: this.$codeDirty,
             validationResults: this.validationResults.slice()
@@ -159,8 +159,14 @@ export class DataModel {
 
     /*create node from serialized data*/
     createNodeFromData(data, parent) {
-        var node;
-        var location = new domain.Point(data.location.x, data.location.y);
+        var node, location;
+
+        if(data.location){
+            location = new domain.Point(data.location.x, data.location.y);
+        }else{
+            location = new domain.Point(0,0);
+        }
+
         if (domain.DecisionNode.$TYPE == data.type) {
             node = new domain.DecisionNode(location);
         } else if (domain.ChanceNode.$TYPE == data.type) {
