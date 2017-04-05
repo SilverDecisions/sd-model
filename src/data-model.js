@@ -107,7 +107,7 @@ export class DataModel {
         this.callbacksDisabled = callbacksDisabled;
     }
 
-    getDTO(filterLocation=false, filterComputed=false, filterPrivate =true){
+    getDTO(filterLocation=false, filterComputed=false, filterPrivate =false){
         var dto = {
             serializedData: this.serialize(true, filterLocation, filterComputed, null, filterPrivate),
             $codeError: this.$codeError,

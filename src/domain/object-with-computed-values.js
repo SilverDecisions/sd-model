@@ -34,6 +34,10 @@ export class ObjectWithComputedValues extends ObjectWithIdAndEditableFields{
         this.computed[ruleName]={};
     }
 
+    clearDisplayValues(){
+        this.computed['$displayValues']={};
+    }
+
     displayValue(fieldName, value){
         return this.computedValue(null, '$displayValues.'+fieldName, value);
     }
