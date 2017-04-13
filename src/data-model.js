@@ -157,6 +157,17 @@ export class DataModel {
         this.validationResults  = dataModel.validationResults;
     }
 
+    getGlobalVariableNames(filterFunction = true){
+        var res = [];
+        Utils.forOwn(this.expressionScope, (value, key)=>{
+            if(filterFunction && Utils.isFunction(value)){
+                return;
+            }
+            res.push(key);
+        });
+        return res;
+    }
+
     /*create node from serialized data*/
     createNodeFromData(data, parent) {
         var node, location;
