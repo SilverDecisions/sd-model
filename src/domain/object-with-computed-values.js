@@ -7,12 +7,12 @@ export class ObjectWithComputedValues extends ObjectWithIdAndEditableFields{
     computed={}; //computed values
 
     /*get or set computed value*/
-    computedValue(ruleName, fieldName, value){
+    computedValue(ruleName, fieldPath, value){
         var path = 'computed.';
         if(ruleName){
             path+=ruleName+'.';
         }
-        path+=fieldName;
+        path+=fieldPath;
         if(value===undefined){
             return  Utils.get(this, path, null);
         }
@@ -38,8 +38,8 @@ export class ObjectWithComputedValues extends ObjectWithIdAndEditableFields{
         this.computed['$displayValues']={};
     }
 
-    displayValue(fieldName, value){
-        return this.computedValue(null, '$displayValues.'+fieldName, value);
+    displayValue(fieldPath, value){
+        return this.computedValue(null, '$displayValues.'+fieldPath, value);
     }
 
     loadComputedValues(computed){

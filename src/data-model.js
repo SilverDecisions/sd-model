@@ -12,6 +12,11 @@ export class DataModel {
     edges = [];
 
     texts = []; //floating texts
+    payoffNames = [];
+    defaultWTP = 1;
+    minimumWTP = 0;
+    maximumWTP = Infinity;
+
 
     expressionScope = {}; //global expression scope
     code = "";//global expression code
@@ -206,7 +211,12 @@ export class DataModel {
         var edgeOrNode = this.addNode(node, parent);
         data.childEdges.forEach(ed=> {
             var edge = this.createNodeFromData(ed.childNode, node);
-            edge.payoff = ed.payoff;
+            if(Utils.isArray()){
+                edge.payoff = ed.payoff;
+            }else{
+                edge.payoff = [ed.payoff, 0];
+            }
+
             edge.probability = ed.probability;
             edge.name = ed.name;
             if(ed.computed){
@@ -496,6 +506,10 @@ export class DataModel {
             nodes: Utils.cloneDeep(this.nodes),
             edges: Utils.cloneDeep(this.edges),
             texts: Utils.cloneDeep(this.texts),
+            payoffNames: Utils.cloneDeep(this.payoffNames),
+            defaultWTP: Utils.cloneDeep(this.defaultWTP),
+            minimumWTP: Utils.cloneDeep(this.minimumWTP),
+            maximumWTP: Utils.cloneDeep(this.maximumWTP),
             expressionScope: Utils.cloneDeep(this.expressionScope),
             code: this.code,
             $codeError: this.$codeError
@@ -530,6 +544,10 @@ export class DataModel {
             nodes: self.nodes,
             edges: self.edges,
             texts: self.texts,
+            payoffNames: self.payoffNames,
+            defaultWTP: self.defaultWTP,
+            minimumWTP: self.minimumWTP,
+            maximumWTP: self.maximumWTP,
             expressionScope: self.expressionScope,
             code: self.code,
             $codeError: self.$codeError
@@ -555,6 +573,10 @@ export class DataModel {
             nodes: self.nodes,
             edges: self.edges,
             texts: self.texts,
+            payoffNames: self.payoffNames,
+            defaultWTP: self.defaultWTP,
+            minimumWTP: self.minimumWTP,
+            maximumWTP: self.maximumWTP,
             expressionScope: self.expressionScope,
             code: self.code,
             $codeError: self.$codeError
@@ -603,12 +625,21 @@ export class DataModel {
         });
     }
 
+    reversePayoffs(){
+        this.payoffNames.reverse();
+        this.edges.forEach(e=>e.payoff.reverse())
+    }
+
     _setNewState(newState, redo) {
         var nodeById = Utils.getObjectByIdMap(newState.nodes);
         var edgeById = Utils.getObjectByIdMap(newState.edges);
         this.nodes = newState.nodes;
         this.edges = newState.edges;
         this.texts = newState.texts;
+        this.payoffNames = newState.payoffNames;
+        this.defaultWTP = newState.defaultWTP;
+        this.minimumWTP = newState.minimumWTP;
+        this.maximumWTP = newState.maximumWTP;
         this.expressionScope = newState.expressionScope;
         this.code = newState.code;
         this.$codeError  = newState.$codeError
