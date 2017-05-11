@@ -211,7 +211,7 @@ export class DataModel {
         var edgeOrNode = this.addNode(node, parent);
         data.childEdges.forEach(ed=> {
             var edge = this.createNodeFromData(ed.childNode, node);
-            if(Utils.isArray()){
+            if(Utils.isArray(ed.payoff)){
                 edge.payoff = ed.payoff;
             }else{
                 edge.payoff = [ed.payoff, 0];
