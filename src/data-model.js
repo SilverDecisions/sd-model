@@ -71,7 +71,11 @@ export class DataModel {
             code: this.code,
             expressionScope: this.expressionScope,
             trees: this.getRoots(),
-            texts: this.texts
+            texts: this.texts,
+            payoffNames: this.payoffNames,
+            defaultWTP: this.defaultWTP,
+            minimumWTP: this.minimumWTP,
+            maximumWTP: this.maximumWTP
         };
 
         if(!stringify){
@@ -109,6 +113,24 @@ export class DataModel {
         if (data.expressionScope) {
             Utils.extend(this.expressionScope, data.expressionScope);
         }
+
+        if(data.payoffNames !== undefined){
+            this.payoffNames = data.payoffNames;
+        }
+
+        if(data.defaultWTP !== undefined){
+            this.defaultWTP = data.defaultWTP;
+        }
+
+        if(data.minimumWTP !== undefined){
+            this.minimumWTP = data.minimumWTP;
+        }
+
+        if(data.maximumWTP !== undefined){
+            this.maximumWTP = data.maximumWTP;
+        }
+
+
         this.callbacksDisabled = callbacksDisabled;
     }
 
@@ -599,6 +621,11 @@ export class DataModel {
         this.code = '';
         this.$codeError = null;
         this.$codeDirty = false;
+
+        this.payoffNames = [];
+        this.defaultWTP = 1;
+        this.minimumWTP = 0;
+        this.maximumWTP = Infinity;
     }
 
     addText(text) {
