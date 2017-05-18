@@ -391,9 +391,9 @@ export class DataModel {
         nodeToCopy.childEdges.forEach(e=> {
             var childClone = self.cloneSubtree(e.childNode, cloneComputedValues);
             childClone.$parent = clone;
-            var edge = new domain.Edge(clone, childClone, e.name, e.payoff, e.probability);
+            var edge = new domain.Edge(clone, childClone, e.name, Utils.cloneDeep(e.payoff), e.probability);
             if (cloneComputedValues) {
-                edge.computed = Utils.cloneDeep(e.computed)
+                edge.computed = Utils.cloneDeep(e.computed);
                 childClone.computed = Utils.cloneDeep(e.childNode.computed)
             }
             clone.childEdges.push(edge);
