@@ -13,9 +13,9 @@ export class DataModel {
 
     texts = []; //floating texts
     payoffNames = [];
-    defaultWTP = 1;
-    minimumWTP = 0;
-    maximumWTP = Infinity;
+    defaultCriterion1Weight = 1;
+    weightLowerBound = 0;
+    weightUpperBound = Infinity;
 
 
     expressionScope = {}; //global expression scope
@@ -73,9 +73,9 @@ export class DataModel {
             trees: this.getRoots(),
             texts: this.texts,
             payoffNames: this.payoffNames,
-            defaultWTP: this.defaultWTP,
-            minimumWTP: this.minimumWTP,
-            maximumWTP: this.maximumWTP
+            defaultCriterion1Weight: this.defaultCriterion1Weight,
+            weightLowerBound: this.weightLowerBound,
+            weightUpperBound: this.weightUpperBound
         };
 
         if(!stringify){
@@ -118,16 +118,16 @@ export class DataModel {
             this.payoffNames = data.payoffNames;
         }
 
-        if(data.defaultWTP !== undefined){
-            this.defaultWTP = data.defaultWTP;
+        if(data.defaultCriterion1Weight !== undefined){
+            this.defaultCriterion1Weight = data.defaultCriterion1Weight;
         }
 
-        if(data.minimumWTP !== undefined){
-            this.minimumWTP = data.minimumWTP;
+        if(data.weightLowerBound !== undefined){
+            this.weightLowerBound = data.weightLowerBound;
         }
 
-        if(data.maximumWTP !== undefined){
-            this.maximumWTP = data.maximumWTP;
+        if(data.weightUpperBound !== undefined){
+            this.weightUpperBound = data.weightUpperBound;
         }
 
 
@@ -529,9 +529,9 @@ export class DataModel {
             edges: Utils.cloneDeep(this.edges),
             texts: Utils.cloneDeep(this.texts),
             payoffNames: Utils.cloneDeep(this.payoffNames),
-            defaultWTP: Utils.cloneDeep(this.defaultWTP),
-            minimumWTP: Utils.cloneDeep(this.minimumWTP),
-            maximumWTP: Utils.cloneDeep(this.maximumWTP),
+            defaultCriterion1Weight: Utils.cloneDeep(this.defaultCriterion1Weight),
+            weightLowerBound: Utils.cloneDeep(this.weightLowerBound),
+            weightUpperBound: Utils.cloneDeep(this.weightUpperBound),
             expressionScope: Utils.cloneDeep(this.expressionScope),
             code: this.code,
             $codeError: this.$codeError
@@ -567,9 +567,9 @@ export class DataModel {
             edges: self.edges,
             texts: self.texts,
             payoffNames: self.payoffNames,
-            defaultWTP: self.defaultWTP,
-            minimumWTP: self.minimumWTP,
-            maximumWTP: self.maximumWTP,
+            defaultCriterion1Weight: self.defaultCriterion1Weight,
+            weightLowerBound: self.weightLowerBound,
+            weightUpperBound: self.weightUpperBound,
             expressionScope: self.expressionScope,
             code: self.code,
             $codeError: self.$codeError
@@ -596,9 +596,9 @@ export class DataModel {
             edges: self.edges,
             texts: self.texts,
             payoffNames: self.payoffNames,
-            defaultWTP: self.defaultWTP,
-            minimumWTP: self.minimumWTP,
-            maximumWTP: self.maximumWTP,
+            defaultCriterion1Weight: self.defaultCriterion1Weight,
+            weightLowerBound: self.weightLowerBound,
+            weightUpperBound: self.weightUpperBound,
             expressionScope: self.expressionScope,
             code: self.code,
             $codeError: self.$codeError
@@ -623,9 +623,9 @@ export class DataModel {
         this.$codeDirty = false;
 
         this.payoffNames = [];
-        this.defaultWTP = 1;
-        this.minimumWTP = 0;
-        this.maximumWTP = Infinity;
+        this.defaultCriterion1Weight = 1;
+        this.weightLowerBound = 0;
+        this.weightUpperBound = Infinity;
     }
 
     addText(text) {
@@ -664,9 +664,9 @@ export class DataModel {
         this.edges = newState.edges;
         this.texts = newState.texts;
         this.payoffNames = newState.payoffNames;
-        this.defaultWTP = newState.defaultWTP;
-        this.minimumWTP = newState.minimumWTP;
-        this.maximumWTP = newState.maximumWTP;
+        this.defaultCriterion1Weight = newState.defaultCriterion1Weight;
+        this.weightLowerBound = newState.weightLowerBound;
+        this.weightUpperBound = newState.weightUpperBound;
         this.expressionScope = newState.expressionScope;
         this.code = newState.code;
         this.$codeError  = newState.$codeError
