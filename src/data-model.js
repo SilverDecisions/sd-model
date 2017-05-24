@@ -1,7 +1,6 @@
-import {Utils} from 'sd-utils'
-import {log} from "sd-utils";
-import * as domain from './domain'
-import {ValidationResult} from './validation-result'
+import {Utils, log} from "sd-utils";
+import * as domain from "./domain";
+import {ValidationResult} from "./validation-result";
 
 /*
  * Data model manager
@@ -114,19 +113,19 @@ export class DataModel {
             Utils.extend(this.expressionScope, data.expressionScope);
         }
 
-        if(data.payoffNames !== undefined){
+        if (data.payoffNames !== undefined && data.payoffNames !== null) {
             this.payoffNames = data.payoffNames;
         }
 
-        if(data.defaultCriterion1Weight !== undefined){
+        if (data.defaultCriterion1Weight !== undefined && data.defaultCriterion1Weight !== null) {
             this.defaultCriterion1Weight = data.defaultCriterion1Weight;
         }
 
-        if(data.weightLowerBound !== undefined){
+        if (data.weightLowerBound !== undefined && data.weightLowerBound !== null) {
             this.weightLowerBound = data.weightLowerBound;
         }
 
-        if(data.weightUpperBound !== undefined){
+        if (data.weightUpperBound !== undefined && data.weightUpperBound !== null) {
             this.weightUpperBound = data.weightUpperBound;
         }
 
