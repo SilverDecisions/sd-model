@@ -71,7 +71,7 @@ export class DataModel {
             expressionScope: this.expressionScope,
             trees: this.getRoots(),
             texts: this.texts,
-            payoffNames: this.payoffNames,
+            payoffNames: this.payoffNames.slice(),
             defaultCriterion1Weight: this.defaultCriterion1Weight,
             weightLowerBound: this.weightLowerBound,
             weightUpperBound: this.weightUpperBound
