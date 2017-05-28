@@ -408,10 +408,13 @@ export class DataModel {
         var self = this;
         var nodeOrEdge = self.addNode(nodeToAttach, parent);
 
+        nodeToAttach.expressionScope = null;
+
         var childEdges = self.getAllDescendantEdges(nodeToAttach);
         childEdges.forEach(e=> {
             self.edges.push(e);
             self.nodes.push(e.childNode);
+            e.childNode.expressionScope = null;
         });
 
         return nodeOrEdge;
