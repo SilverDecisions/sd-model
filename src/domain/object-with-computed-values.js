@@ -43,6 +43,6 @@ export class ObjectWithComputedValues extends ObjectWithIdAndEditableFields{
     }
 
     loadComputedValues(computed){
-        this.computed = computed;
+        this.computed = Utils.cloneDeep(computed);
     }
 }
