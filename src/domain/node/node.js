@@ -15,6 +15,8 @@ export class Node extends ObjectWithComputedValues{
 
     expressionScope=null;
 
+    folded = false; // is node folded along with its subtree
+
     $DISPLAY_VALUE_NAMES = ['childrenPayoff', 'aggregatedPayoff', 'probabilityToEnter', 'optimal']
 
     constructor(type, location){

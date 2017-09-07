@@ -229,6 +229,8 @@ export class DataModel {
             node.loadComputedValues(data.computed);
         }
 
+        node.folded = !!data.folded;
+
         var edgeOrNode = this.addNode(node, parent);
         data.childEdges.forEach(ed=> {
             var edge = this.createNodeFromData(ed.childNode, node);
@@ -390,7 +392,12 @@ export class DataModel {
         nodeToCopy.childEdges.forEach(e=> {
             var childClone = self.cloneSubtree(e.childNode, cloneComputedValues);
             childClone.$parent = clone;
-            var edge = new domain.Edge(clone, childClone, e.name, Utils.cloneDeep(e.payoff), e.probability);
+            var edge = Utils.clone(e);
+            edge.$id = Utils.guid();
+            edge.parentNode = clone;
+            edge.childNode = childClone;
+            edge.payoff = Utils.cloneDeep(e.payoff);
+            edge.computed = {};
             if (cloneComputedValues) {
                 edge.computed = Utils.cloneDeep(e.computed);
                 childClone.computed = Utils.cloneDeep(e.childNode.computed)
