@@ -13,6 +13,7 @@ var p = require('./package.json'),
 stringify = require('stringify');
 
 var Server = require('karma').Server;
+var runSequence = require('run-sequence');
 
 /* nicer browserify errors */
 var gutil = require('gulp-util')
@@ -40,8 +41,8 @@ gulp.task('clean', function (cb) {
     return del(['tmp', 'dist'], cb);
 });
 
-gulp.task('build-clean', ['clean'], function () {
-    return gulp.start('build');
+gulp.task('build-clean', function (cb) {
+    runSequence('clean', 'build', cb)
 });
 
 gulp.task('build', ['build-standalone', 'build-module'], function () {
@@ -64,8 +65,33 @@ gulp.task('build-module', function () {
     return finishBrowserifyBuild(b, jsFileName, "dist")
 });
 
-gulp.task('default', ['build-clean'],  function() {
+gulp.task('default',  function(cb) {
+    runSequence('build-clean', 'test', cb);
 });
+
+gulp.task('prepare-test', function(){
+    return gulp
+        .src('test/data/*.json')
+        .pipe(require('gulp-filelist')('data-json-filelist.json', { flatten: true }))
+        .pipe(gulp.dest('test'))
+});
+
+gulp.task('test', ['prepare-test'], function (done) {
+    return runTest(true, done)
+});
+
+gulp.task('test-watch', ['prepare-test'], function (done) {
+    return runTest(false, done)
+});
+
+function runTest(singleRun, done){
+    return new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: singleRun
+    }, function () {
+        done();
+    }).start();
+}
 
 function buildJs(src, standaloneName,  jsFileName, dest, external) {
     if(!external){
@@ -122,9 +148,6 @@ function finishBrowserifyBuild(b, jsFileName, dest){
     }
     return pipe;
 }
-
-gulp.task('default', ['build-clean'],  function() {
-});
 
 // error function for plumber
 var onError = function (err) {
