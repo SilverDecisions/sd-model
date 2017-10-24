@@ -83,6 +83,6 @@
     "yargs": "^6.0.0"
   },
   "dependencies": {
-    "sd-utils": "^0.1.0"
+    "sd-utils": "0.1.8"
   }
 }
