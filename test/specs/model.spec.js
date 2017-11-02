@@ -38,14 +38,20 @@ describe("DataModel", () => {
 
     });
 
-    it("shoul allow clearing", ()=>{
+    it("should allow clearing computed values", ()=>{
+        expect(()=>dataModel.clearComputedValues()).not.toThrow();
+        expect(dataModel.nodes.every(n=>!Object.keys(n.computed).length)).toBeTruthy();
+        expect(dataModel.edges.every(e=>!Object.keys(e.computed).length)).toBeTruthy();
+    });
+
+    it("should allow clearing", ()=>{
         expect(()=>dataModel.clear()).not.toThrow();
         expect(dataModel.nodes.length).toEqual(0);
         expect(dataModel.edges.length).toEqual(0);
         expect(dataModel.texts.length).toEqual(0);
     });
 
-    it("shoul allow loading of data", ()=>{
+    it("should allow loading of data", ()=>{
         let fixtures = jasmine.getFixtures();
         fixtures.fixturesPath = "base/test/data";
 
@@ -54,7 +60,7 @@ describe("DataModel", () => {
         expect(()=>dataModel.load(json.data)).not.toThrow(); //TODO
     });
 
-    it("shoul allow cloning and attachement of subtrees", ()=>{ //TODO better checks
+    it("should allow cloning and attachement of subtrees", ()=>{ //TODO better checks
         let root = dataModel.getRoots()[0];
         let prevChildNo = root.childEdges.length;
         let copied = dataModel.cloneSubtree(root.childEdges[4].childNode, true);
@@ -63,7 +69,7 @@ describe("DataModel", () => {
         expect(root.childEdges.length).toEqual(prevChildNo+1)
     });
 
-    it("shoul allow saving state and undo/redo", ()=>{
+    it("should allow saving state and undo/redo", ()=>{
         let prevNodesNumber = dataModel.nodes.length;
 
         dataModel.saveState();

@@ -637,6 +637,11 @@ export class DataModel {
         this.weightUpperBound = Infinity;
     }
 
+    clearComputedValues(){
+        this.nodes.forEach(n=>n.clearComputedValues());
+        this.edges.forEach(e=>e.clearComputedValues());
+    }
+
     addText(text) {
         this.texts.push(text);
 

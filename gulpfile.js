@@ -16,8 +16,8 @@ var Server = require('karma').Server;
 var runSequence = require('run-sequence');
 
 /* nicer browserify errors */
-var gutil = require('gulp-util')
-var chalk = require('chalk')
+var gutil = require('gulp-util');
+var chalk = require('chalk');
 
 
 var projectName= "sd-model";
