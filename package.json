@@ -1,6 +1,6 @@
 {
   "name": "sd-model",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "SilverDecisions data model module",
   "main": "index.js",
   "scripts": {
@@ -83,6 +83,6 @@
     "yargs": "^10.0.3"
   },
   "dependencies": {
-    "sd-utils": "0.1.9"
+    "sd-utils": "0.1.10"
   }
 }
