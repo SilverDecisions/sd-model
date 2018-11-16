@@ -40,7 +40,7 @@ module.exports = function (config) {
                     "babelify",
                     {
                         "presets": [
-                            "es2015"
+                            "@babel/preset-env"
                         ],
                         "plugins": [
                             "transform-class-properties",
@@ -77,6 +77,11 @@ module.exports = function (config) {
                 {'type': 'html', dir: 'coverage'},
                 {'type': 'lcov'}
             ]
+        },
+        client: {
+            jasmine: {
+                random: false
+            }
         }
     });
 };
