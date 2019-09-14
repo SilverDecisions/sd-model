@@ -1,10 +1,11 @@
 {
   "name": "sd-model",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "SilverDecisions data model module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "release-it --verbose"
   },
   "repository": {
     "type": "git",
@@ -44,12 +45,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
     "babel-plugin-istanbul": "^5.2.0",
     "babel-plugin-transform-builtin-extend": "^1.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
     "babelify": "^10.0.0",
     "browserify": "^16.5.0",
     "chalk": "^2.4.2",
@@ -73,6 +74,7 @@
     "karma-firefox-launcher": "^1.2.0",
     "karma-jasmine": "^2.0.1",
     "merge-stream": "^2.0.0",
+    "release-it": "^12.3.6",
     "stringify": "^5.2.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
