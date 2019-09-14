@@ -1,6 +1,7 @@
 import {DataModel} from '../../src/data-model'
 import * as domain from "../../src/domain";
 
+
 describe("DataModel", () => {
 
     let dataModel;
@@ -52,11 +53,8 @@ describe("DataModel", () => {
     });
 
     it("should allow loading of data", ()=>{
-        let fixtures = jasmine.getFixtures();
-        fixtures.fixturesPath = "base/test/data";
 
-        let json = JSON.parse(readFixtures("mcdm2.json"));
-
+        let json = readJsonFile("base/test/data/", "mcdm2.json");
         expect(()=>dataModel.load(json.data)).not.toThrow(); //TODO
     });
 
@@ -81,3 +79,17 @@ describe("DataModel", () => {
         expect(dataModel.nodes.length).toEqual(0)
     });
 });
+
+function readJsonFile(path, fileName){
+    let result = null;
+    let url = path + fileName;
+    $.ajax({
+        dataType: "json",
+        url: url,
+        success:  (data) => result = data,
+        async: false
+    }).fail(function ($xhr, status, err) {
+        throw new Error('JSON file could not be loaded: ' + url + ' (status: ' + status + ', message: ' + err.message + ')')
+    });
+    return result;
+}
