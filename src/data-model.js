@@ -162,19 +162,19 @@ export class DataModel {
         }
         var byId = {}
         dataModel.nodes.forEach(n=>{
-            byId[n.$id] = n;
+            byId[n.id] = n;
         });
         this.nodes.forEach((n,i)=>{
-            if(byId[n.$id]){
-                n.loadComputedValues(byId[n.$id].computed);
+            if(byId[n.id]){
+                n.loadComputedValues(byId[n.id].computed);
             }
         });
         dataModel.edges.forEach(e=>{
-            byId[e.$id] = e;
+            byId[e.id] = e;
         });
         this.edges.forEach((e,i)=>{
-            if(byId[e.$id]){
-                e.loadComputedValues(byId[e.$id].computed);
+            if(byId[e.id]){
+                e.loadComputedValues(byId[e.id].computed);
             }
         });
         this.expressionScope = dataModel.expressionScope;
@@ -211,8 +211,8 @@ export class DataModel {
         } else if (domain.TerminalNode.$TYPE == data.type) {
             node = new domain.TerminalNode(location);
         }
-        if(data.$id){
-            node.$id = data.$id;
+        if(data.id){
+            node.id = data.id;
         }
         if(data.$fieldStatus){
             node.$fieldStatus = data.$fieldStatus;
@@ -245,8 +245,8 @@ export class DataModel {
             if(ed.computed){
                 edge.loadComputedValues(ed.computed);
             }
-            if(ed.$id){
-                edge.$id = ed.$id;
+            if(ed.id){
+                edge.id = ed.id;
             }
             if(ed.$fieldStatus){
                 edge.$fieldStatus = ed.$fieldStatus;
@@ -393,7 +393,7 @@ export class DataModel {
             var childClone = self.cloneSubtree(e.childNode, cloneComputedValues);
             childClone.$parent = clone;
             var edge = Utils.clone(e);
-            edge.$id = Utils.guid();
+            edge.id = Utils.guid();
             edge.parentNode = clone;
             edge.childNode = childClone;
             edge.payoff = Utils.cloneDeep(e.payoff);
@@ -435,7 +435,7 @@ export class DataModel {
     /*shallow clone without parent and children*/
     cloneNode(node) {
         var clone = Utils.clone(node)
-        clone.$id = Utils.guid();
+        clone.id = Utils.guid();
         clone.location = Utils.clone(node.location);
         clone.computed = Utils.clone(node.computed);
         clone.$parent = null;
@@ -444,11 +444,11 @@ export class DataModel {
     }
 
     findNodeById(id) {
-        return Utils.find(this.nodes, n=>n.$id == id);
+        return Utils.find(this.nodes, n=>n.id == id);
     }
 
     findEdgeById(id) {
-        return Utils.find(this.edges, e=>e.$id == id);
+        return Utils.find(this.edges, e=>e.id == id);
     }
 
     findById(id) {
@@ -687,10 +687,10 @@ export class DataModel {
 
         this.nodes.forEach(n=> {
             for (var i = 0; i < n.childEdges.length; i++) {
-                var edge = edgeById[n.childEdges[i].$id];
+                var edge = edgeById[n.childEdges[i].id];
                 n.childEdges[i] = edge;
                 edge.parentNode = n;
-                edge.childNode = nodeById[edge.childNode.$id];
+                edge.childNode = nodeById[edge.childNode.id];
             }
 
         });

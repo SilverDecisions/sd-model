@@ -2,7 +2,7 @@ import {Utils} from 'sd-utils'
 
 export class ObjectWithIdAndEditableFields {
 
-    $id = Utils.guid(); //internal id
+    id = Utils.guid(); //internal id
     $fieldStatus={};
 
     getFieldStatus(fieldPath){

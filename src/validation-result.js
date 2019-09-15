@@ -17,10 +17,10 @@ export class ValidationResult{
             errorsByName=[];
             this.errors[name]=errorsByName;
         }
-        var objE = this.objectIdToError[obj.$id];
+        var objE = this.objectIdToError[obj.id];
         if(!objE){
             objE=[];
-            this.objectIdToError[obj.$id]= objE;
+            this.objectIdToError[obj.id]= objE;
         }
         errorsByName.push(obj);
         objE.push(error);
