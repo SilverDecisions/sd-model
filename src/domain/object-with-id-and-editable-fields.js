@@ -5,6 +5,8 @@ export class ObjectWithIdAndEditableFields {
     id = Utils.guid(); //internal id
     $fieldStatus={};
 
+    $ObjectWithIdAndEditableFields = true;
+
     getFieldStatus(fieldPath){
         if(!Utils.get(this.$fieldStatus, fieldPath, null)){
             Utils.set(this.$fieldStatus, fieldPath, {
