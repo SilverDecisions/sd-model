@@ -3,7 +3,7 @@
   "increment": "patch",
   "preReleaseId": null,
   "hooks": {
-    "after:bump": ["ncu -u --packageFile package.json sd-utils", "npm update sd-utils", "gulp"]
+    "after:bump": ["ncu -u --packageFile package.json sd-utils", "npm update sd-utils", "npm run build", "npm test"]
   },
   "changelogCommand": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
   "npm": {
