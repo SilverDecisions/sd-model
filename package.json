@@ -4,7 +4,7 @@
   "description": "SilverDecisions data model module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test \"test/contract/*.test.js\"",
     "release": "release-it --verbose"
   },
   "repository": {
