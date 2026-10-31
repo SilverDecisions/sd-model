@@ -80,16 +80,8 @@ describe("DataModel", () => {
     });
 });
 
+// Reads a fixture in Node (Karma served the repository under "base/").
 function readJsonFile(path, fileName){
-    let result = null;
-    let url = path + fileName;
-    $.ajax({
-        dataType: "json",
-        url: url,
-        success:  (data) => result = data,
-        async: false
-    }).fail(function ($xhr, status, err) {
-        throw new Error('JSON file could not be loaded: ' + url + ' (status: ' + status + ', message: ' + err.message + ')')
-    });
-    return result;
+    let file = require('path').join(__dirname, '..', '..', path.replace(/^base\//, ''), fileName);
+    return JSON.parse(require('fs').readFileSync(file, 'utf8'));
 }
