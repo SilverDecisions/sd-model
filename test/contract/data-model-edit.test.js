@@ -222,3 +222,54 @@ test('clear, clearComputedValues, clearExpressionScope, reversePayoffs, getGloba
     assert.deepEqual([dm.code, dm.$codeError, dm.$codeDirty, dm.defaultCriterion1Weight, dm.weightLowerBound, dm.weightUpperBound],
         ['', null, false, 1, 0, Infinity]);
 });
+
+// Regression: replaceNode (used by convertNode) did not update $parent of the
+// children, which kept pointing to the removed node. sd-computations then took
+// the expression scope of the children from the removed node (stale variable
+// values) and sd-tree-designer treated the children of a selected converted
+// node as separate subtrees (copy / paste duplicated them).
+test('convertNode: the children of the new node have it as $parent', () => {
+    const {dm, root, chance, toChance, toT1, toT2} = sampleTree();
+    dm.convertNode(chance, 'decision');
+    const converted = toChance.childNode;
+    assert.equal(toT1.childNode.$parent, converted);
+    assert.equal(toT2.childNode.$parent, converted);
+    checkIntegrity(assert, dm);
+    const subtree = dm.getAllNodesInSubtree(converted);
+    assert.deepEqual(dm.findSubtreeRoots(subtree), [converted]);
+    // a converted leaf keeps the parent chain
+    dm.convertNode(toT1.childNode, 'chance');
+    assert.equal(toT1.childNode.$parent, converted);
+    checkIntegrity(assert, dm);
+    // and the relinked state survives undo / redo
+    dm.saveState();
+    dm.removeNodes([converted]);
+    dm.undo();
+    checkIntegrity(assert, dm);
+    assert.equal(dm.getRoots().length, 1);
+    assert.equal(dm.getRoots()[0].id, root.id);
+});
+
+// Regression: cloneSubtree shared the field status objects of the nodes and
+// edges (and the nested computed values of the nodes) with the original, so
+// marking a field of the pasted copy as invalid marked the original too, and
+// sd-computations skipped evaluating the original's expressions.
+test('cloneSubtree: the copy does not share field status or computed values with the original', () => {
+    const {dm, chance, toT1} = sampleTree();
+    chance.computedValue('rule', 'payoff', 1);
+    chance.setValueValidity('name', true);
+    toT1.setValueValidity('probability', true);
+    for (const cloneComputed of [false, true]) {
+        const copy = dm.cloneSubtree(chance, cloneComputed);
+        const copiedEdge = copy.childEdges[0];
+        copiedEdge.setSyntaxValidity('probability', false);
+        copy.setSyntaxValidity('name', false);
+        copy.computedValue('rule', 'payoff', 2);
+        assert.equal(toT1.isFieldValid('probability'), true);
+        assert.equal(chance.isFieldValid('name'), true);
+        assert.equal(chance.computedValue('rule', 'payoff'), 1);
+        // the copy keeps the state it was copied with
+        assert.equal(dm.cloneSubtree(copy).childEdges[0].isFieldValid('probability'), false);
+        assert.equal(dm.cloneSubtree(copy).computedValue('rule', 'payoff'), 2);
+    }
+});

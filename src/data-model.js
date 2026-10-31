@@ -368,7 +368,10 @@ export class DataModel {
         }
 
         newNode.childEdges = oldNode.childEdges;
-        newNode.childEdges.forEach(e=>e.parentNode=newNode);
+        newNode.childEdges.forEach(e=>{
+            e.parentNode=newNode;
+            e.childNode.$parent=newNode;
+        });
 
         var index = this.nodes.indexOf(oldNode);
         if(~index){
@@ -394,6 +397,7 @@ export class DataModel {
             childClone.$parent = clone;
             var edge = Utils.clone(e);
             edge.id = Utils.guid();
+            edge.$fieldStatus = Utils.cloneDeep(e.$fieldStatus);
             edge.parentNode = clone;
             edge.childNode = childClone;
             edge.payoff = Utils.cloneDeep(e.payoff);
@@ -437,7 +441,8 @@ export class DataModel {
         var clone = Utils.clone(node)
         clone.id = Utils.guid();
         clone.location = Utils.clone(node.location);
-        clone.computed = Utils.clone(node.computed);
+        clone.computed = Utils.cloneDeep(node.computed);
+        clone.$fieldStatus = Utils.cloneDeep(node.$fieldStatus);
         clone.$parent = null;
         clone.childEdges = [];
         return clone;
