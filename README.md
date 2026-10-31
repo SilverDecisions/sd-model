@@ -57,8 +57,10 @@ trees, ids and parent-child links, undo / redo, validation results, the DTO
 and loading / saving of the diagram files in `test/contract/fixtures/` (saved
 by SilverDecisions 0.5.2 to 1.2.0). Saved data is compared semantically with
 an expectation derived from the file format, and load -> save -> load -> save
-must give the same data after the first save. Randomness (ids) is mocked per
-test with a seeded generator.
+must give the same data after the first save, except the ids of floating
+texts: `load` does not restore them and generates new ones (current behaviour,
+covered by a test). Randomness (ids) is mocked per test with a seeded
+generator.
 
 `npm run test:build` (CI on Linux) copies the working tree, runs `npm ci` and
 the build, checks the six artifacts (ES5, parsed source maps) and that
