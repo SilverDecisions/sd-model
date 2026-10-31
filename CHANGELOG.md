@@ -28,8 +28,17 @@ committed `dist/` is still the `0.2.11` build.
   AMD module with an `exports` dependency instead of returning the exports,
   and extends an existing `SilverDecisions.Model` object instead of
   replacing it.
-- The runtime dependencies are unchanged (`sd-utils` `^0.1.15`, in the
-  lockfile with `lodash` 4.17.21 and `loglevel` 1.7.1).
+- The runtime dependencies are unchanged (`sd-utils` `^0.1.15`, with
+  `loglevel` 1.7.1 in the lockfile).
+
+### Dependencies
+
+- The lockfile resolves `lodash` (a dependency of sd-utils 0.1.15, range
+  `^4.17.21`) to 4.18.1 instead of 4.17.21: security fixes only (prototype
+  pollution in `_.unset`/`_.omit`, `_.template` imports validation).
+  `dist/standalone` bundles lodash, so the next release build contains
+  4.18.1. Consumers resolve lodash with their own lockfiles; bundles built
+  earlier (e.g. the published `dist/` of sd-utils 0.1.15) are not changed.
 - Tests: node:test contract tests (`test/contract/`), the Jasmine specs run in
   Node instead of Karma, `npm run test:build` checks the build in an isolated
   copy; GitHub Actions instead of Travis CI.
