@@ -5,6 +5,21 @@
 Changes since `0.2.11`. The version number is not changed yet, and the
 committed `dist/` is still the `0.2.11` build.
 
+### Behaviour changes (bug fixes)
+
+- `DataModel.convertNode` (via `replaceNode`) sets `$parent` of the children
+  to the new node. They kept pointing to the replaced node, which is no
+  longer in the model: sd-computations then initialised the expression scope
+  of the children from that node (variable values of the time of the
+  conversion), and sd-tree-designer treated the children of a selected
+  converted node as separate subtrees (copy and paste duplicated them).
+  Saving and loading the diagram repaired the links.
+- `DataModel.cloneSubtree` (copy / paste) copies the field status
+  (`$fieldStatus`) of the nodes and edges and the computed values of the
+  nodes deeply. The copy shared these objects with the original: marking a
+  field of the pasted copy as invalid also marked the original field, and
+  sd-computations then skipped the evaluation of the original's expression.
+
 ### Build and tests
 
 - The bundles are built with Rollup and Babel 7 instead of gulp/browserify,
