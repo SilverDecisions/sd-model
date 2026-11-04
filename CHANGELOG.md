@@ -22,6 +22,15 @@ committed `dist/` is still the `0.2.11` build.
 
 ### Build and tests
 
+- The minified module bundle `dist/sd-model.min.js` keeps the state of its
+  `require` wrapper (module cache, factories, previous `require`) in its own
+  closure: `@rollup/plugin-terser` defaults to `toplevel: true` for the cjs
+  output and turned the wrapper into global variables, so two minified module
+  bundles in one scope overwrote each other (`Maximum call stack size
+  exceeded`, `r is not a function`). Terser now runs with `toplevel: false`;
+  the plain and standalone files are unchanged.
+  `test/contract/bundle-isolation.test.js` checks the globals, the cache and
+  the `require` chain of the module bundle.
 - The bundles are built with Rollup and Babel 7 instead of gulp/browserify,
   with the same formats, global names (`SilverDecisions.Model`, the global
   `require` exposing `sd-model`) and ES5 output. The UMD bundle registers an
