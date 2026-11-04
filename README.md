@@ -51,6 +51,12 @@ contract tests load:
 `SD_MODEL_DIST` points at another `dist/` directory, `SD_UTILS_BUNDLE` at
 another sd-utils `require` bundle.
 
+For the `module` targets `test/contract/bundle-isolation.test.js` loads the module bundle as a script into a fresh
+global scope and checks that it adds only `require`, keeps its exports and
+cache when another `require` bundle is loaded after it, passes other names
+along the `require` chain (`MODULE_NOT_FOUND` for unknown ones) and evaluates
+the module on the first `require`.
+
 The contract tests cover the API used by sd-computations, sd-tree-designer
 and SilverDecisions: exports and bundle globals, domain classes, editing
 trees, ids and parent-child links, undo / redo, validation results, the DTO
